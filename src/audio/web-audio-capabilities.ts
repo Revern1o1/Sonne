@@ -2,9 +2,9 @@ export interface WebAudioCapabilities {
   readonly supported: boolean;
   readonly audioWorklet: boolean;
   readonly offlineContext: boolean;
-  readonly sampleRate?: number;
 }
 
+/** Detect support without creating an AudioContext or consuming browser resources. */
 export function detectWebAudioCapabilities(): WebAudioCapabilities {
   const AudioContextConstructor = globalThis.AudioContext;
   const OfflineContextConstructor = globalThis.OfflineAudioContext;
@@ -13,8 +13,5 @@ export function detectWebAudioCapabilities(): WebAudioCapabilities {
     audioWorklet: typeof AudioContextConstructor === 'function'
       && 'audioWorklet' in AudioContextConstructor.prototype,
     offlineContext: typeof OfflineContextConstructor === 'function',
-    sampleRate: typeof AudioContextConstructor === 'function'
-      ? new AudioContextConstructor().sampleRate
-      : undefined,
   };
 }
